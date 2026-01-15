@@ -22,7 +22,7 @@ def text_to_speech(payload: dict):
     if not text:
         raise HTTPException(status_code=400, detail="text is required")
 
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
+    url = f"https://api.in.residency.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
 
     headers = {
         "xi-api-key": ELEVEN_API_KEY,

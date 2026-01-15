@@ -8,7 +8,7 @@ load_dotenv()
 router = APIRouter()
 
 ELEVEN_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-ELEVEN_STT_URL = "https://api.elevenlabs.io/v1/speech-to-text"
+ELEVEN_STT_URL = "https://api.in.residency.elevenlabs.io/v1/speech-to-text"
 
 @router.post("/")
 async def speech_to_text(
@@ -39,7 +39,11 @@ async def speech_to_text(
 
     if resp.status_code != 200:
         raise HTTPException(400, resp.text)
-
+    if "application/json" not in resp.headers.get("content-type", ""):
+        raise HTTPException(
+            502,
+            f"Unexpected response type: {resp.headers.get('content-type')} | Body: {resp.text[:200]}"
+        )
     result = resp.json()
 
     return {
